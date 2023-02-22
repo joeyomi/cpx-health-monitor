@@ -3,17 +3,17 @@
 import logging
 import sys
 
-from typing import Optional
 import click
+import pyfiglet
 
-from cpx_health_monitor.config import try_to_load_config
-from cpx_health_monitor.logging import setup_logging
+# from cpx_health_monitor.config import try_to_load_config
+# from cpx_health_monitor.logging import setup_logging
 from cpx_health_monitor.logic import run
 
 LOG = logging.getLogger(__name__)
 
 # cpxstat config
-""" 
+"""
 @click.group()
 def configs():
     #Configure cpxstat
@@ -51,29 +51,29 @@ def instances():
     pass
 
 
-@instances.command(help='List instances')
-@click.option('--service', help='Filter by service name')
-@click.option('--status', help='Filter by status')
+@instances.command(help="List instances")
+@click.option("--service", help="Filter by service name")
+@click.option("--status", help="Filter by status")
 def list(service, status):
     """List instances"""
-    run('instances', 'list', service, status)
+    run("instances", "list", service, status)
 
 
 # cpxstat instances watch
-@instances.command(help='Watch instances')
-@click.option('--service', help='Filter by service name')
-@click.option('--status', help='Filter by status')
+@instances.command(help="Watch instances")
+@click.option("--service", help="Filter by service name")
+@click.option("--status", help="Filter by status")
 def watch(service, status):
     """Watch instances"""
-    run('instances', 'watch', service, status)
+    run("instances", "watch", service, status)
 
 
 # cpxstat instances show
-@instances.command(help='Show instance details')
-@click.argument('instancename')
+@instances.command(help="Show instance details")
+@click.argument("instancename")
 def show(instancename):
     """Show an instance"""
-    run('instances', 'show', instancename)
+    run("instances", "show", instancename)
 
 
 # cpxstat services
@@ -84,32 +84,32 @@ def services():
 
 
 # cpxstat services list
-@services.command(help='List services')
-@click.option('--status', help='Filter by status')
+@services.command(help="List services")
+@click.option("--status", help="Filter by status")
 def list(status):
     """List services"""
-    run('services', 'list', status)
+    run("services", "list", status)
 
 
 # cpxstat services watch
-@services.command(help='Watch services')
-@click.argument('servicename', required=False)
-@click.option('--status', help='Filter by status')
+@services.command(help="Watch services")
+@click.argument("servicename", required=False)
+@click.option("--status", help="Filter by status")
 def watch(servicename, status):
     """Watch services"""
-    run('services', 'watch', servicename, status)
+    run("services", "watch", servicename, status)
 
 
 # cpxstat services show
-@services.command(help='Show service details')
-@click.argument('servicename')
+@services.command(help="Show service details")
+@click.argument("servicename")
 def show(servicename):
     """Show a service"""
-    run('services', 'show', servicename)
+    run("services", "show", servicename)
 
 
 # cpxstat CLI
-@click.group(help='CPXStat command-line interface')
+@click.group(help="CPXStat command-line interface")
 def cpxstat():
     """CPXStat command-line interface"""
     pass
@@ -125,12 +125,12 @@ def main(
     # config_path: Optional[str] = None,
     # config_section_name: Optional[str] = None,
 ) -> int:
-
     # config = try_to_load_config(config_path, config_section_name)
 
     # setup_logging(config['logging'])
 
     exit_code = None
+    print(pyfiglet.figlet_format("CPX STAT"))
 
     try:
         LOG.info("cpxstat started")

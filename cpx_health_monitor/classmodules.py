@@ -12,13 +12,17 @@ class CPXMonitor:
         host (str): The hostname or IP address of the server to monitor.
         port (int): The port number on which to access the server.
         protocol (str): The protocol to use for accessing the server (e.g. "http").
-        _health_threshold (int): The maximum number of unhealthy instances that can exist before a service is marked as unhealthy.
+        _health_threshold (int):
+            The maximum number of unhealthy instances that can exist,
+            before a service is marked as unhealthy.
 
     Methods:
         _get_instances() -> List[str]: Retrieves a list of all instances being monitored.
         _get_health(instance: dict) -> str: Determines the health status of a given instance.
-        get_stats(ip: str=None) -> List[Dict[str, Dict[str, Any]]]: Retrieves performance statistics for a specified IP address or all monitored instances.
-        get_services(instances: List[Dict[str, Dict[str, str]]]=None) -> List[Dict[str, Dict[str, Any]]]: Retrieves statistics for all monitored services.
+        get_stats(ip: str=None) -> List[Dict[str, Dict[str, Any]]]:
+            Retrieves performance statistics for a specified IP address or all monitored instances.
+        get_services(instances: List[Dict[str, Dict[str, str]]]=None) -> List[Dict[str, Dict[str, Any]]]:
+            Retrieves statistics for all monitored services.
     """
 
     def __init__(self, host="localhost", port=5000, protocol="http") -> None:
@@ -61,8 +65,8 @@ class CPXMonitor:
             A string indicating the health status of the instance ("Healthy" or "Unhealthy").
         """
 
-        cpu = int(instance['cpu'].replace('%', ''))
-        memory = int(instance['memory'].replace('%', ''))
+        cpu = int(instance["cpu"].replace("%", ""))
+        memory = int(instance["memory"].replace("%", ""))
 
         if cpu >= 80 or memory >= 80:
             return "Unhealthy"
@@ -73,7 +77,8 @@ class CPXMonitor:
         Retrieves performance statistics for a specified IP address or all monitored instances.
 
         Args:
-            ip (str): The IP address of the instance to retrieve statistics for. If None, statistics will be retrieved for all monitored instances.
+            ip (str): The IP address of the instance to retrieve statistics for.
+            If None, statistics will be retrieved for all monitored instances.
 
         Returns:
             A list of dictionaries containing performance statistics for each instance.
@@ -90,16 +95,20 @@ class CPXMonitor:
 
             for instance in instances:
                 temp = get_stat(instance_ip=instance)
-                temp['status'] = self._get_health(instance=temp)
+                temp["status"] = self._get_health(instance=temp)
                 temp_list.append({instance: temp})
 
             return temp_list
         else:
             temp = get_stat(instance_ip=ip)
-            temp['status'] = self._get_health(instance=temp)
-            return [{ip: temp}, ]
+            temp["status"] = self._get_health(instance=temp)
+            return [
+                {ip: temp},
+            ]
 
-    def get_services(self, instances: List[Dict[str, Dict[str, str]]] = None) -> List[Dict[str, Dict[str, str]]]:
+    def get_services(
+        self, instances: List[Dict[str, Dict[str, str]]] = None
+    ) -> List[Dict[str, Dict[str, str]]]:
         """
         Get statistics for all services running on the monitored hosts.
 
@@ -116,7 +125,9 @@ class CPXMonitor:
             instances = self.get_stats()
 
         service_stats = defaultdict(
-            lambda: {"cpu": [], "memory": [], "healthy": 0, "unhealthy": 0, "total": 0})
+            lambda: {"cpu": [], "memory": [],
+                     "healthy": 0, "unhealthy": 0, "total": 0}
+        )
 
         for instance in instances:
             for ip, stats in instance.items():
@@ -129,27 +140,40 @@ class CPXMonitor:
                 service_stats[service]["cpu"].append(
                     int(stats["cpu"].replace("%", "")))
                 service_stats[service]["memory"].append(
-                    int(stats["memory"].replace("%", "")))
+                    int(stats["memory"].replace("%", ""))
+                )
 
         result = []
         for service, stats in service_stats.items():
             avg_cpu = sum(stats["cpu"]) / len(stats["cpu"])
             avg_memory = sum(stats["memory"]) / len(stats["memory"])
-            status = "Healthy" if stats["unhealthy"] <= self._health_threshold else "Unhealthy"
+            status = (
+                "Healthy"
+                if stats["unhealthy"] <= self._health_threshold
+                else "Unhealthy"
+            )
 
-            temp = {"cpu": f"{int(avg_cpu)}%", "memory": f"{int(avg_memory)}%", "status": status,
-                    "total_instances": stats["total"], "healthy_instances": stats["healthy"],
-                    "unhealthy_instances": stats["unhealthy"]}
+            temp = {
+                "cpu": f"{int(avg_cpu)}%",
+                "memory": f"{int(avg_memory)}%",
+                "status": status,
+                "total_instances": stats["total"],
+                "healthy_instances": stats["healthy"],
+                "unhealthy_instances": stats["unhealthy"],
+            }
 
             result.append({service: temp})
 
         return result
 
-    def get_services_new(self, service: Optional[str] = None,
-                         instances: Optional[List[Dict[str, Dict[str, str]]]] = None) -> List[
-            Dict[str, Dict[str, str]]]:
+    def get_services_new(
+        self,
+        service: Optional[str] = None,
+        instances: Optional[List[Dict[str, Dict[str, str]]]] = None,
+    ) -> List[Dict[str, Dict[str, str]]]:
         """
-        Get statistics for all services running on the monitored hosts, or a single service if specified.
+        Get statistics for all services running on the monitored hosts,
+        or a single service if specified.
 
         Args:
             service (str, optional):
@@ -166,7 +190,9 @@ class CPXMonitor:
             instances = self.get_stats()
 
         service_stats = defaultdict(
-            lambda: {"cpu": [], "memory": [], "healthy": 0, "unhealthy": 0, "total": 0})
+            lambda: {"cpu": [], "memory": [],
+                     "healthy": 0, "unhealthy": 0, "total": 0}
+        )
 
         for instance in instances:
             for ip, stats in instance.items():
@@ -177,9 +203,11 @@ class CPXMonitor:
                 else:
                     service_stats[service_name]["healthy"] += 1
                 service_stats[service_name]["cpu"].append(
-                    int(stats["cpu"].replace("%", "")))
+                    int(stats["cpu"].replace("%", ""))
+                )
                 service_stats[service_name]["memory"].append(
-                    int(stats["memory"].replace("%", "")))
+                    int(stats["memory"].replace("%", ""))
+                )
 
         result = []
 
@@ -188,20 +216,38 @@ class CPXMonitor:
                 stats = service_stats[service]
                 avg_cpu = sum(stats["cpu"]) / len(stats["cpu"])
                 avg_memory = sum(stats["memory"]) / len(stats["memory"])
-                status = "Healthy" if stats["unhealthy"] <= self._health_threshold else "Unhealthy"
-                temp = {"cpu": f"{int(avg_cpu)}%", "memory": f"{int(avg_memory)}%", "status": status,
-                        "total_instances": stats["total"], "healthy_instances": stats["healthy"],
-                        "unhealthy_instances": stats["unhealthy"]}
+                status = (
+                    "Healthy"
+                    if stats["unhealthy"] <= self._health_threshold
+                    else "Unhealthy"
+                )
+                temp = {
+                    "cpu": f"{int(avg_cpu)}%",
+                    "memory": f"{int(avg_memory)}%",
+                    "status": status,
+                    "total_instances": stats["total"],
+                    "healthy_instances": stats["healthy"],
+                    "unhealthy_instances": stats["unhealthy"],
+                }
                 result.append({service: temp})
             return result
 
         for service_name, stats in service_stats.items():
             avg_cpu = sum(stats["cpu"]) / len(stats["cpu"])
             avg_memory = sum(stats["memory"]) / len(stats["memory"])
-            status = "Healthy" if stats["unhealthy"] <= self._health_threshold else "Unhealthy"
-            temp = {"cpu": f"{int(avg_cpu)}%", "memory": f"{int(avg_memory)}%", "status": status,
-                    "total_instances": stats["total"], "healthy_instances": stats["healthy"],
-                    "unhealthy_instances": stats["unhealthy"]}
+            status = (
+                "Healthy"
+                if stats["unhealthy"] <= self._health_threshold
+                else "Unhealthy"
+            )
+            temp = {
+                "cpu": f"{int(avg_cpu)}%",
+                "memory": f"{int(avg_memory)}%",
+                "status": status,
+                "total_instances": stats["total"],
+                "healthy_instances": stats["healthy"],
+                "unhealthy_instances": stats["unhealthy"],
+            }
             result.append({service_name: temp})
 
         return result
@@ -223,12 +269,18 @@ class CPXMonitorPrinter:
 
     def get_stats(self, ip=None, service=None, status=None):
         """
-        Retrieves performance statistics for a specified IP address or all monitored instances and prints them in a table format.
+        Retrieves performance statistics for a specified IP address,
+        or all monitored instances and prints them in a table format.
 
         Args:
-            ip (str): The IP address of the instance to retrieve statistics for. If None, statistics will be retrieved for all monitored instances.
-            service (str): The name of the service to retrieve instance statistics for. If None, instance statistics for all services will be retrieved.
-            status (str): The status of the instances to retrieve statistics for. If None, statistics for all instances will be retrieved.
+            ip (str): The IP address of the instance to retrieve statistics for.
+            If None, statistics will be retrieved for all monitored instances.
+
+            service (str): The name of the service to retrieve instance statistics for.
+            If None, instance statistics for all services will be retrieved.
+
+            status (str): The status of the instances to retrieve statistics for.
+            If None, statistics for all instances will be retrieved.
         """
         stats = self.cpx_monitor.get_stats(ip)
 
@@ -247,15 +299,23 @@ class CPXMonitorPrinter:
                     continue
                 if status is not None and stats["status"].lower() != status.lower():
                     continue
-                temp.append([instance_ip, stats["service"],
-                            stats["cpu"], stats["memory"], stats["status"]])
+                temp.append(
+                    [
+                        instance_ip,
+                        stats["service"],
+                        stats["cpu"],
+                        stats["memory"],
+                        stats["status"],
+                    ]
+                )
 
         [table.add_row(*row) for row in sorted(temp)]
         return table
 
     def get_services(self, instances=None, service=None, status=None):
         """
-        Retrieves statistics for all services running on the monitored hosts and prints them in a table format.
+        Retrieves statistics for all services running on the monitored hosts,
+        and prints them in a table format.
 
         Args:
             instances (List[Dict[str, Dict[str, str]]], optional):
@@ -284,15 +344,17 @@ class CPXMonitorPrinter:
                     continue
                 if status is not None and stats["status"].lower() != status.lower():
                     continue
-                temp.append([
-                    service_name,
-                    stats["cpu"],
-                    stats["memory"],
-                    stats["status"],
-                    str(stats["healthy_instances"]),
-                    str(stats["unhealthy_instances"]),
-                    str(stats["total_instances"]),
-                ])
+                temp.append(
+                    [
+                        service_name,
+                        stats["cpu"],
+                        stats["memory"],
+                        stats["status"],
+                        str(stats["healthy_instances"]),
+                        str(stats["unhealthy_instances"]),
+                        str(stats["total_instances"]),
+                    ]
+                )
 
         [table.add_row(*row) for row in sorted(temp)]
         return table
