@@ -21,13 +21,13 @@ To install the CPX Health Monitor CLI, you can use pip to install the tool from 
 
     .. code-block::
 
-       wget pip install https://github.com/joeyomi/cpx-health-monitor/releases/download/v1.0.0/cpx_health_monitor-v1.0.0.tar.gz
+       wget pip install https://github.com/joeyomi/cpx-health-monitor/releases/download/v1.0.0/cpx-health-monitor.tar.gz
 
 * Then, use pip to install the tool from the tar file:
 
     .. code-block::
 
-       pip install cpx_health_monitor-v1.0.0.tar.gz
+       pip install cpx-health-monitor.tar.gz
 
 This will install the cpxstat command line tool and its dependencies in your Python environment. 
 
@@ -35,7 +35,7 @@ Alternatively, you can install the tool directly from a remote URL using pip:
 
     .. code-block::
 
-       pip install pip install https://github.com/joeyomi/cpx-health-monitor/releases/download/v1.0.0/cpx_health_monitor-v1.0.0.tar.gz
+       pip install https://github.com/joeyomi/cpx-health-monitor/releases/download/v1.0.0/cpx-health-monitor.tar.gz
 
 Note that you may need to use sudo or run the command as an administrator depending on your system's configuration.
 
@@ -100,6 +100,7 @@ Building
         ls -l dist
 
 Alternatively, you can install with "make":
+
     .. code-block::
 
         make dev-deps
