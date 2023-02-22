@@ -40,7 +40,8 @@ lint: dev-deps ## check style with flake8
 	flake8 cpx_health_monitor tests
 
 test: ## run tests quickly with the default Python
-	python tests/cpx_server.py 5000 &
+	python tests/cpx_server.py 8085 &
+	export CPX_HEALTH_MONITOR_PORT=8085
 	pytest
 
 dist: clean dev-deps ## builds source and wheel package

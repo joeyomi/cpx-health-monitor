@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import time
 import click
 from cpx_health_monitor.classmodules import CPXMonitor, CPXMonitorPrinter
@@ -58,7 +59,16 @@ def run(group, command, *args) -> None:
 
 console = Console()
 
-cpx = CPXMonitor()  # TODO: Initialise from config
+cpx_protocol = os.getenv("CPX_HEALTH_MONITOR_PROTOCOL") if os.getenv(
+    "CPX_HEALTH_MONITOR_PROTOCOL") else "http"
+cpx_host = os.getenv("CPX_HEALTH_MONITOR_HOST") if os.getenv(
+    "CPX_HEALTH_MONITOR_HOST") else "localhost"
+cpx_port = os.getenv("CPX_HEALTH_MONITOR_PORT") if os.getenv(
+    "CPX_HEALTH_MONITOR_PORT") else 8085
+
+
+cpx = CPXMonitor(protocol=cpx_protocol, host=cpx_host,
+                 port=cpx_port)  # TODO: Initialise from config
 printer = CPXMonitorPrinter(cpx_monitor=cpx)
 
 
