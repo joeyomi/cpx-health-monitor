@@ -12,6 +12,13 @@ Features
 * Show details of a particular instance or service.
 
 
+
+Demo
+------------
+.. image:: ./demo.gif
+   :alt: Demo GIF
+
+
 Installation
 ------------
 
