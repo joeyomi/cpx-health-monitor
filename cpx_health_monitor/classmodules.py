@@ -25,7 +25,7 @@ class CPXMonitor:
             Retrieves statistics for all monitored services.
     """
 
-    def __init__(self, host="localhost", port=5000, protocol="http") -> None:
+    def __init__(self, host="localhost", port=8085, protocol="http") -> None:
         """
         Initializes a new instance of the CPXMonitor class.
 

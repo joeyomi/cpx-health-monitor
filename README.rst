@@ -43,6 +43,25 @@ Once installed, you can run the tool using the cpxstat command.
 
 Usage
 -----
+Start the CPX Server, on your desired port:
+
+    .. code-block::
+
+       python ./cpx_server.py 8085
+
+Export your CPX Server configs as environment variables, example:
+
+    .. code-block::
+
+        export CPX_HEALTH_MONITOR_PROTOCOL=http
+        export CPX_HEALTH_MONITOR_HOST=localhost
+        export CPX_HEALTH_MONITOR_PORT=8085
+
+These environment variables are not required, they all have defaults:
+
+* CPX_HEALTH_MONITOR_PROTOCOL defaults to "http"
+* CPX_HEALTH_MONITOR_HOST defaults to "localhost"
+* CPX_HEALTH_MONITOR_PORT defaults to "8085"
 
 To use the CPX Health Monitor CLI, run the following command:
 
@@ -71,7 +90,6 @@ Next Steps
 
 * Implement configs:
     * YAML config file with API URL and PORT.
-    * Enviroment variables to accept API URL and PORT.
 * Improve logging.
 * Improve Error Handling.
 
