@@ -85,6 +85,12 @@ Building
 
        git clone https://github.com/joeyomi/cpx-health-monitor.git
 
+* Navigate to "./cpx-health-monitor":
+
+    .. code-block::
+
+       cd cpx-health-monitor
+
 * Install dev dependencies:
 
     .. code-block::
@@ -103,5 +109,4 @@ Alternatively, you can install with "make":
 
     .. code-block::
 
-        make dev-deps
         make install-e
