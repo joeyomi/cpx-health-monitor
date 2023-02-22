@@ -55,3 +55,6 @@ install-e: ## install the package into the active Python's site-packages in edit
 
 dev-deps: ## install development dependencies via pip
 	pip install -r requirements/dev.txt
+
+test-deps: ## install testing dependencies via pip
+	pip install -r requirements/test.txt
