@@ -43,7 +43,7 @@ _CONFIG_DEFAULTS = {
                 'format': "%(asctime)s [%(levelname).1s] [%(hostname)s %(process)s %(threadName)s] %(message)s",
                 'datefmt': "%Y-%m-%d %H:%M:%S.%f %z",
             },
-            
+
         },
         'filters': {
             'hostname_injector': {
@@ -78,15 +78,16 @@ _CONFIG_ENV_VARS_MAP = {
                 'format': "CPX_HEALTH_MONITOR_GENERIC_LOG_RECORD_FMT",
                 'datefmt': "CPX_HEALTH_MONITOR_GENERIC_LOG_DATE_FMT",
             },
-            
+
         },
     },
 }
 
+
 def _maybe_override_from_file(
     config: Dict,
-    file_path: Optional[str]=None,
-    section_name: Optional[str]=None,
+    file_path: Optional[str] = None,
+    section_name: Optional[str] = None,
 ) -> None:
 
     if not file_path:
@@ -106,13 +107,15 @@ def _maybe_override_from_file(
 
 
 def _maybe_override_log_record_format_from_env(config: Dict, formatter_name: str) -> None:
-    value = os.environ.get(_CONFIG_ENV_VARS_MAP['logging']['formatters'][formatter_name]['format'])
+    value = os.environ.get(
+        _CONFIG_ENV_VARS_MAP['logging']['formatters'][formatter_name]['format'])
     if value:
         config['logging']['formatters'][formatter_name]['format'] = value
 
 
 def _maybe_override_log_date_format_from_env(config: Dict, formatter_name: str) -> None:
-    value = os.environ.get(_CONFIG_ENV_VARS_MAP['logging']['formatters'][formatter_name]['datefmt'])
+    value = os.environ.get(
+        _CONFIG_ENV_VARS_MAP['logging']['formatters'][formatter_name]['datefmt'])
     if value:
         config['logging']['formatters'][formatter_name]['datefmt'] = value
 
@@ -120,7 +123,6 @@ def _maybe_override_log_date_format_from_env(config: Dict, formatter_name: str) 
 def _maybe_override_logging(config: Dict) -> None:
     _maybe_override_log_record_format_from_env(config, 'generic')
     _maybe_override_log_date_format_from_env(config, 'generic')
-    
 
 
 def _maybe_override_from_env(config: Dict) -> None:
@@ -128,8 +130,8 @@ def _maybe_override_from_env(config: Dict) -> None:
 
 
 def try_to_load_config(
-    file_path: Optional[str]=None,
-    section_name: Optional[str]=None,
+    file_path: Optional[str] = None,
+    section_name: Optional[str] = None,
     # extra params passed from CLI args
 ) -> Dict:
     config = copy.deepcopy(_CONFIG_DEFAULTS)
