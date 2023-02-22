@@ -6,42 +6,11 @@ import sys
 import click
 import pyfiglet
 
-# from cpx_health_monitor.config import try_to_load_config
-# from cpx_health_monitor.logging import setup_logging
 from cpx_health_monitor.logic import run
 
 LOG = logging.getLogger(__name__)
 
-# cpxstat config
-"""
-@click.group()
-def configs():
-    #Configure cpxstat
-    pass
 
-
-@configs.command()
-@click.option(
-    '--config_path',
-    type=click.Path(dir_okay=False, path_type=str),
-    required=False,
-    help="Path to config file",
-)
-@configs.command()
-@click.option(
-    '--config_section_name',
-    type=str,
-    required=False,
-    help="Name of config section to use",
-)
-@configs.command()
-@click.option(
-    '--list',
-    type=str,
-    required=False,
-    help="Name of config section to use",
-)
- """
 # cpxstat instances list
 
 
@@ -122,13 +91,7 @@ cpxstat.add_command(services)
 
 # @click
 def main(
-    # config_path: Optional[str] = None,
-    # config_section_name: Optional[str] = None,
 ) -> int:
-    # config = try_to_load_config(config_path, config_section_name)
-
-    # setup_logging(config['logging'])
-
     exit_code = None
     print(pyfiglet.figlet_format("CPX STAT"))
 
